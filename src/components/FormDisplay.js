@@ -1,0 +1,414 @@
+import React from 'react'
+import { Form, Grid, Message } from 'semantic-ui-react'
+import { debounce, uniqBy, isEqual } from 'lodash'
+
+// import FileHandler from './FormFileHandler';
+import DatePicker from './Calendar/DatePicker'
+import {
+  getErrorList,
+  getFormGridStruct,
+  getValidatorMap,
+  getDefaultState,
+  convertToArray,
+  runValidation,
+  isRequired
+} from '../utils'
+
+export default class GenericForm extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = getDefaultState(props)
+    this.handleDynamicSearchChange = debounce(
+      this.handleDynamicSearchChange.bind(this),
+      500
+    )
+    this.getFormUnit = this.getFormUnit.bind(this)
+    props.onChange(this.state)
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (!isEqual(prevState, this.state)) {
+      const { onChange } = this.props
+      onChange(this.state)
+    }
+  }
+
+  // eslint-disable-next-line
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (!isEqual(nextProps, this.props)) {
+      const newState = getDefaultState(nextProps)
+      this.setState(newState)
+    }
+  }
+
+  /**
+   * @values an array or a string representing the values that need validations
+   * @validators an array of validators or an object with type and params or a custom funtion
+   */
+  validateInput = (values, validators, prevState, name, fieldName) => {
+    if (!validators || (Array.isArray(validators) && !validators.length))
+      return prevState.errors
+    return {
+      ...prevState.errors,
+      [name]: runValidation(values, validators, fieldName)
+    }
+  }
+
+  onAdvanceChange = (name, value) => {
+    this.setState((prevState) => ({
+      formData: { ...prevState.formData, [name]: value }
+    }))
+  }
+
+  handleInputChange = (e, { name, value, validators, fieldName }) =>
+    this.setState((prevState) => ({
+      formData: { ...prevState.formData, [name]: value },
+      errors: this.validateInput(value, validators, prevState, name, fieldName)
+    }))
+
+  handleCheckChange = (e, { name, value, checked, validators, fieldName }) =>
+    this.setState((prevState) => {
+      const currValue = { ...prevState.formData[name].value, [value]: checked }
+      const selected = convertToArray(currValue)
+      return {
+        formData: {
+          ...prevState.formData,
+          [name]: {
+            value: currValue,
+            selected
+          }
+        },
+        errors: this.validateInput(
+          (selected || []).filter((s) => !!s),
+          validators,
+          prevState,
+          name,
+          fieldName
+        )
+      }
+    })
+
+  handleDropdownChange = (
+    e,
+    { name, value, validators, multiple, options, fieldName }
+  ) => {
+    let selectedOptions
+    let values
+    if (multiple) {
+      selectedOptions = options.filter((o) => value.includes(o.value))
+      values = selectedOptions.map((so) => so && so.text)
+    } else {
+      // eslint-disable-next-line prefer-destructuring
+      selectedOptions = options.filter((o) => o.value === value)[0]
+      values = selectedOptions && selectedOptions.text
+    }
+    this.setState((prevState) => ({
+      formData: {
+        ...prevState.formData,
+        [name]: { value, selected: selectedOptions }
+      },
+      errors: this.validateInput(values, validators, prevState, name, fieldName)
+    }))
+  }
+
+  addNewDropdownItem = (
+    e,
+    { name, value, multiple, validators, fieldName }
+  ) => {
+    if (multiple) {
+      throw new Error(
+        'Adding new elements with multiple dropdown not supported yet'
+      )
+    }
+    const { dynamicOptions } = this.state
+    const currentOption = { text: value, value: -1 }
+    dynamicOptions[name].options = [
+      ...dynamicOptions[name].options,
+      currentOption
+    ]
+
+    this.setState((prevState) => ({
+      formData: {
+        ...prevState.formData,
+        [name]: { value: currentOption.value, selected: currentOption }
+      },
+      errors: this.validateInput(value, validators, prevState, name, fieldName),
+      dynamicOptions
+    }))
+  }
+
+  handleFileChange = (fileObject, { name }) => {
+    this.setState((prevState) => ({
+      formData: { ...prevState.formData, [name]: fileObject }
+    }))
+  }
+
+  async handleDynamicSearchChange(e, { name, multiple, searchQuery }) {
+    if (!searchQuery.length) return
+    const { dynamicOptions, formData } = this.state
+    dynamicOptions[name].loading = true
+    this.setState({ dynamicOptions })
+    let newOptions
+    try {
+      newOptions = await dynamicOptions[name].callback(searchQuery)
+    } catch {
+      newOptions = []
+    }
+    const oldOptions = formData[name].selected || []
+    if (multiple) {
+      dynamicOptions[name].options = uniqBy(
+        [...newOptions, ...oldOptions],
+        'value'
+      )
+    } else {
+      dynamicOptions[name].options = newOptions
+    }
+    dynamicOptions[name].loading = false
+    this.setState({ dynamicOptions })
+  }
+
+  getFormUnit(val) {
+    const { formData, errors, dynamicOptions } = this.state
+
+    if (val.type === 'hidden' || (val.config && val.config.visible === false)) {
+      return null
+    }
+    if (val.type === 'input') {
+      return (
+        <Form.Input
+          key={val.dataId}
+          required={isRequired(val.validators)}
+          validators={val.validators}
+          name={val.dataId}
+          fieldName={val.fieldName}
+          label={val.fieldName}
+          value={formData[val.dataId] || ''}
+          error={!!(errors[val.dataId] && errors[val.dataId].length)}
+          onChange={this.handleInputChange}
+          disabled={val.config && val.config.disabled}
+          {...((val.config && val.config.props) || {})}
+        />
+      )
+    }
+    if (val.type === 'dropdown') {
+      if (val.config && val.config.search) {
+        return (
+          <Form.Dropdown
+            key={val.dataId}
+            label={val.fieldName}
+            name={val.dataId}
+            fieldName={val.fieldName}
+            options={dynamicOptions[val.dataId].options}
+            multiple={val.config && val.config.multiple}
+            clearable={val.config && val.config.clearable}
+            selection
+            search
+            placeholder={val.placeholder}
+            value={(formData[val.dataId] || {}).value}
+            onChange={this.handleDropdownChange}
+            onSearchChange={this.handleDynamicSearchChange}
+            disabled={
+              (val.config && val.config.disabled) ||
+              dynamicOptions[val.dataId].loading
+            }
+            loading={dynamicOptions[val.dataId].loading}
+            onAddItem={this.addNewDropdownItem}
+            allowAdditions={val.config && val.config.allowAdditions}
+            validators={val.validators}
+            error={!!(errors[val.dataId] && errors[val.dataId].length)}
+            required={isRequired(val.validators)}
+          />
+        )
+      }
+      return (
+        <Form.Dropdown
+          key={val.dataId}
+          label={val.fieldName}
+          name={val.dataId}
+          fieldName={val.fieldName}
+          options={val.options}
+          multiple={val.config && val.config.multiple}
+          clearable={val.config && val.config.clearable}
+          selection
+          placeholder={val.placeholder}
+          value={(formData[val.dataId] || {}).value}
+          onChange={this.handleDropdownChange}
+          disabled={val.config && val.config.disabled}
+          onAddItem={this.addNewDropdownItem}
+          allowAdditions={val.config && val.config.allowAdditions}
+          loading={val.config && val.config.loading}
+          validators={val.validators}
+          error={!!(errors[val.dataId] && errors[val.dataId].length)}
+          required={isRequired(val.validators)}
+        />
+      )
+    }
+    if (val.type === 'radio') {
+      return (
+        <React.Fragment key={val.dataId}>
+          <Form.Field
+            required={isRequired(val.validators)}
+            error={!!(errors[val.dataId] && errors[val.dataId].length)}
+          >
+            <label>{val.fieldName}</label>
+          </Form.Field>
+          {val.options.map((radio) => (
+            <Form.Radio
+              key={radio.value}
+              label={radio.text}
+              name={val.dataId}
+              fieldName={val.fieldName}
+              value={radio.value}
+              checked={formData[val.dataId] === radio.value}
+              onChange={this.handleInputChange}
+              validators={val.validators}
+              error={!!(errors[val.dataId] && errors[val.dataId].length)}
+            />
+          ))}
+        </React.Fragment>
+      )
+    }
+    if (val.type === 'checkbox') {
+      return (
+        <React.Fragment key={val.dataId}>
+          <Form.Field
+            required={isRequired(val.validators)}
+            error={!!(errors[val.dataId] && errors[val.dataId].length)}
+          >
+            <label>{val.fieldName}</label>
+          </Form.Field>
+          {val.options.map((check) => (
+            <Form.Checkbox
+              key={check.value}
+              label={check.text}
+              name={val.dataId}
+              fieldName={val.fieldName}
+              value={check.value}
+              checked={
+                !!((formData[val.dataId] || {}).value || {})[check.value]
+              }
+              onChange={this.handleCheckChange}
+              validators={val.validators}
+              error={!!(errors[val.dataId] && errors[val.dataId].length)}
+            />
+          ))}
+        </React.Fragment>
+      )
+    }
+    if (val.type === 'textarea') {
+      return (
+        <Form.TextArea
+          key={val.dataId}
+          required={isRequired(val.validators)}
+          name={val.dataId}
+          fieldName={val.fieldName}
+          label={val.fieldName}
+          value={formData[val.dataId] || ''}
+          error={!!(errors[val.dataId] && errors[val.dataId].length)}
+          onChange={this.handleInputChange}
+          validators={val.validators}
+        />
+      )
+    }
+    if (val.type === 'date') {
+      return (
+        <React.Fragment key={val.dataId}>
+          <Form.Field
+            required={isRequired(val.validators)}
+            error={!!(errors[val.dataId] && errors[val.dataId].length)}
+          >
+            <label>{val.fieldName}</label>
+            <DatePicker
+              key={val.dataId}
+              name={val.dataId}
+              fieldName={val.fieldName}
+              value={formData[val.dataId]}
+              onDateChange={this.handleInputChange}
+              validators={val.validators}
+              {...((val.config && val.config.props) || {})}
+            />
+          </Form.Field>
+        </React.Fragment>
+      )
+    }
+    // if (val.type === 'files') {
+    //   return (
+    //     <FileHandler
+    //       key={val.dataId}
+    //       name={val.dataId}
+    //       fieldName={val.fieldName}
+    //       folderPath={val.folderPath}
+    //       files={formData[val.dataId].files || []}
+    //       onChange={this.handleFileChange}
+    //       header={val.fieldName}
+    //       validators={val.validators}
+    //       error={!!(errors[val.dataId] && errors[val.dataId].length)}
+    //       required={isRequired(val.validators)}
+    //       {...((val.config && val.config.props) || {})}
+    //     />
+    //   );
+    // }
+    return <div>Improper Config</div>
+  }
+
+  validateForm = async () => {
+    const { errors: currentErrors, formData: formState } = this.state
+    const { data: form } = this.props
+    // If error exists return
+    if (Object.values(currentErrors).some((s) => s.length)) return true
+    const validatorMap = getValidatorMap(form, formState)
+    const errors = {}
+    validatorMap.forEach((vm) => {
+      if (vm.validators) {
+        errors[vm.id] = runValidation(vm.value, vm.validators, vm.name)
+      }
+    })
+    // We want to set the state first before making the final return of the function
+    return new Promise((resolve) => {
+      this.setState({ errors }, () => {
+        const hasError = !!Object.values(errors).some((s) => s.length)
+        resolve(hasError)
+      })
+    })
+  }
+
+  renderGrid(data, columns) {
+    const gridList = getFormGridStruct(data, columns)
+    const firstRowLength = (gridList[0] || []).length
+    const actualColumns = columns < firstRowLength ? columns : firstRowLength
+    return (
+      <Grid columns={actualColumns} divided padded>
+        {gridList.map((gl) => (
+          <Grid.Row key={gl.id}>
+            {gl.map((gr) => (
+              <Grid.Column key={gr.id}>{this.getFormUnit(gr)}</Grid.Column>
+            ))}
+          </Grid.Row>
+        ))}
+      </Grid>
+    )
+  }
+
+  render() {
+    const { errors } = this.state
+    const { data, loading, columns } = this.props
+
+    const isColumnView = columns > 1
+
+    return (
+      <Form
+        loading={!!loading}
+        error={errors && Object.values(errors).some((s) => s.length)}
+      >
+        <Message
+          error
+          header='Please check the form for the following'
+          list={getErrorList(errors)}
+        />
+        {isColumnView
+          ? this.renderGrid(data, columns)
+          : data.map((val) => this.getFormUnit(val))}
+      </Form>
+    )
+  }
+}

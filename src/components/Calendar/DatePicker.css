@@ -1,0 +1,33 @@
+.date_picker_container{
+  width: 170px;
+  text-align: center;
+}
+
+.compact {
+  padding: 2px 5px !important;
+  font-size: 12px;
+}
+
+.highlight {
+  cursor: pointer;
+}
+
+.disabled {
+  color: gray;
+}
+
+.highlight:hover {
+  background-color: beige;
+}
+
+.selected {
+  background-color: chocolate;
+}
+
+.table-month {
+  margin-top: 0 !important;
+}
+
+.arrow_icon {
+  cursor: pointer;
+}
