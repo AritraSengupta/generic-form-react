@@ -17,7 +17,7 @@ import { getDefaultValues } from '../utils'
  *
  * type DefaultValues = {[ dataId: String]: { defaultValue: String | { value: Array | String, selected: Array<Textvaluepair> | TextValuePair }, options?: Array<TextValuePair> }}
  * type FormUnit = {
- *    fieldName: String,
+ *    fieldname: String,
  *    dataId: String,
  *    type: 'input' | 'checkbox' | 'dropdown' | 'radio' | 'files' | 'hidden' | 'textarea' | 'date' | 'paymentTerms',
  *    config: Object<any>,

@@ -23,20 +23,21 @@ export default class GenericForm extends React.Component {
       500
     )
     this.getFormUnit = this.getFormUnit.bind(this)
+    this.updateStateIfPropsChange = this.updateStateIfPropsChange.bind(this)
     props.onChange(this.state)
   }
 
   componentDidUpdate(prevProps, prevState) {
+    this.updateStateIfPropsChange(prevProps)
     if (!isEqual(prevState, this.state)) {
       const { onChange } = this.props
       onChange(this.state)
     }
   }
 
-  // eslint-disable-next-line
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (!isEqual(nextProps, this.props)) {
-      const newState = getDefaultState(nextProps)
+  updateStateIfPropsChange(prevProps) {
+    if (!isEqual(prevProps, this.props)) {
+      const newState = getDefaultState(this.props)
       this.setState(newState)
     }
   }
@@ -45,12 +46,12 @@ export default class GenericForm extends React.Component {
    * @values an array or a string representing the values that need validations
    * @validators an array of validators or an object with type and params or a custom funtion
    */
-  validateInput = (values, validators, prevState, name, fieldName) => {
+  validateInput = (values, validators, prevState, name, fieldname) => {
     if (!validators || (Array.isArray(validators) && !validators.length))
       return prevState.errors
     return {
       ...prevState.errors,
-      [name]: runValidation(values, validators, fieldName)
+      [name]: runValidation(values, validators, fieldname)
     }
   }
 
@@ -60,13 +61,13 @@ export default class GenericForm extends React.Component {
     }))
   }
 
-  handleInputChange = (e, { name, value, validators, fieldName }) =>
+  handleInputChange = (e, { name, value, validators, fieldname }) =>
     this.setState((prevState) => ({
       formData: { ...prevState.formData, [name]: value },
-      errors: this.validateInput(value, validators, prevState, name, fieldName)
+      errors: this.validateInput(value, validators, prevState, name, fieldname)
     }))
 
-  handleCheckChange = (e, { name, value, checked, validators, fieldName }) =>
+  handleCheckChange = (e, { name, value, checked, validators, fieldname }) =>
     this.setState((prevState) => {
       const currValue = { ...prevState.formData[name].value, [value]: checked }
       const selected = convertToArray(currValue)
@@ -83,14 +84,14 @@ export default class GenericForm extends React.Component {
           validators,
           prevState,
           name,
-          fieldName
+          fieldname
         )
       }
     })
 
   handleDropdownChange = (
     e,
-    { name, value, validators, multiple, options, fieldName }
+    { name, value, validators, multiple, options, fieldname }
   ) => {
     let selectedOptions
     let values
@@ -107,13 +108,13 @@ export default class GenericForm extends React.Component {
         ...prevState.formData,
         [name]: { value, selected: selectedOptions }
       },
-      errors: this.validateInput(values, validators, prevState, name, fieldName)
+      errors: this.validateInput(values, validators, prevState, name, fieldname)
     }))
   }
 
   addNewDropdownItem = (
     e,
-    { name, value, multiple, validators, fieldName }
+    { name, value, multiple, validators, fieldname }
   ) => {
     if (multiple) {
       throw new Error(
@@ -132,7 +133,7 @@ export default class GenericForm extends React.Component {
         ...prevState.formData,
         [name]: { value: currentOption.value, selected: currentOption }
       },
-      errors: this.validateInput(value, validators, prevState, name, fieldName),
+      errors: this.validateInput(value, validators, prevState, name, fieldname),
       dynamicOptions
     }))
   }
@@ -180,8 +181,8 @@ export default class GenericForm extends React.Component {
           required={isRequired(val.validators)}
           validators={val.validators}
           name={val.dataId}
-          fieldName={val.fieldName}
-          label={val.fieldName}
+          field_name={val.fieldname}
+          label={val.fieldname}
           value={formData[val.dataId] || ''}
           error={!!(errors[val.dataId] && errors[val.dataId].length)}
           onChange={this.handleInputChange}
@@ -195,9 +196,9 @@ export default class GenericForm extends React.Component {
         return (
           <Form.Dropdown
             key={val.dataId}
-            label={val.fieldName}
+            label={val.fieldname}
             name={val.dataId}
-            fieldName={val.fieldName}
+            fieldname={val.fieldname}
             options={dynamicOptions[val.dataId].options}
             multiple={val.config && val.config.multiple}
             clearable={val.config && val.config.clearable}
@@ -223,9 +224,9 @@ export default class GenericForm extends React.Component {
       return (
         <Form.Dropdown
           key={val.dataId}
-          label={val.fieldName}
+          label={val.fieldname}
           name={val.dataId}
-          fieldName={val.fieldName}
+          fieldname={val.fieldname}
           options={val.options}
           multiple={val.config && val.config.multiple}
           clearable={val.config && val.config.clearable}
@@ -250,14 +251,14 @@ export default class GenericForm extends React.Component {
             required={isRequired(val.validators)}
             error={!!(errors[val.dataId] && errors[val.dataId].length)}
           >
-            <label>{val.fieldName}</label>
+            <label>{val.fieldname}</label>
           </Form.Field>
           {val.options.map((radio) => (
             <Form.Radio
               key={radio.value}
               label={radio.text}
               name={val.dataId}
-              fieldName={val.fieldName}
+              fieldname={val.fieldname}
               value={radio.value}
               checked={formData[val.dataId] === radio.value}
               onChange={this.handleInputChange}
@@ -275,14 +276,14 @@ export default class GenericForm extends React.Component {
             required={isRequired(val.validators)}
             error={!!(errors[val.dataId] && errors[val.dataId].length)}
           >
-            <label>{val.fieldName}</label>
+            <label>{val.fieldname}</label>
           </Form.Field>
           {val.options.map((check) => (
             <Form.Checkbox
               key={check.value}
               label={check.text}
               name={val.dataId}
-              fieldName={val.fieldName}
+              fieldname={val.fieldname}
               value={check.value}
               checked={
                 !!((formData[val.dataId] || {}).value || {})[check.value]
@@ -301,8 +302,8 @@ export default class GenericForm extends React.Component {
           key={val.dataId}
           required={isRequired(val.validators)}
           name={val.dataId}
-          fieldName={val.fieldName}
-          label={val.fieldName}
+          fieldname={val.fieldname}
+          label={val.fieldname}
           value={formData[val.dataId] || ''}
           error={!!(errors[val.dataId] && errors[val.dataId].length)}
           onChange={this.handleInputChange}
@@ -317,11 +318,11 @@ export default class GenericForm extends React.Component {
             required={isRequired(val.validators)}
             error={!!(errors[val.dataId] && errors[val.dataId].length)}
           >
-            <label>{val.fieldName}</label>
+            <label>{val.fieldname}</label>
             <DatePicker
               key={val.dataId}
               name={val.dataId}
-              fieldName={val.fieldName}
+              fieldname={val.fieldname}
               value={formData[val.dataId]}
               onDateChange={this.handleInputChange}
               validators={val.validators}
@@ -336,11 +337,11 @@ export default class GenericForm extends React.Component {
     //     <FileHandler
     //       key={val.dataId}
     //       name={val.dataId}
-    //       fieldName={val.fieldName}
+    //       fieldname={val.fieldname}
     //       folderPath={val.folderPath}
     //       files={formData[val.dataId].files || []}
     //       onChange={this.handleFileChange}
-    //       header={val.fieldName}
+    //       header={val.fieldname}
     //       validators={val.validators}
     //       error={!!(errors[val.dataId] && errors[val.dataId].length)}
     //       required={isRequired(val.validators)}

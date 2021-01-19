@@ -28,14 +28,14 @@ export class ConditionalFormBasic extends BaseFormConfig {
         defaultValue: null,
       },
       {
-        fieldName: 'Date',
+        fieldname: 'Date',
         dataId: 'date',
         type: 'date',
         defaultValue: dateDefaultValue,
         validators: [{ type: 'required' }],
       },
       {
-        fieldName: 'Name',
+        fieldname: 'Name',
         dataId: 'name',
         type: 'input',
         defaultValue: nameDefaultValue,
@@ -45,7 +45,7 @@ export class ConditionalFormBasic extends BaseFormConfig {
         validators: [{ type: 'required' }],
       },
       {
-        fieldName: 'TextArea',
+        fieldname: 'TextArea',
         dataId: 'textarea',
         type: 'textarea',
         config: {
@@ -55,7 +55,7 @@ export class ConditionalFormBasic extends BaseFormConfig {
         validators: [{ type: 'required' }],
       },
       {
-        fieldName: 'Dropdown',
+        fieldname: 'Dropdown',
         dataId: 'dropdown',
         type: 'dropdown',
         defaultValue: dropdownDefaultValue,
@@ -69,7 +69,7 @@ export class ConditionalFormBasic extends BaseFormConfig {
         validators: [{ type: 'required' }],
       },
       {
-        fieldName: 'Checkbox',
+        fieldname: 'Checkbox',
         dataId: 'checkbox',
         type: 'checkbox',
         defaultValue: checkboxDefaultValue,
@@ -83,7 +83,7 @@ export class ConditionalFormBasic extends BaseFormConfig {
         validators: [{ type: 'required' }],
       },
       {
-        fieldName: 'Radio',
+        fieldname: 'Radio',
         dataId: 'radio',
         type: 'radio',
         config: {

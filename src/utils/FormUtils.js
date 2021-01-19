@@ -285,12 +285,16 @@ export const getValidatorMap = (form, formState) =>
       } else {
         value = selected && selected.text
       }
+    } else if (value && el.type === 'checkbox') {
+      const { value: selected } = value
+      console.log('mark://', 'validatorMap', { value, selected })
+      value = (selected || []).filter((s) => !!s)
     }
     return {
       id: el.dataId,
       validators: el.validators,
       value,
-      name: el.fieldName
+      name: el.fieldname
     }
   })
 
@@ -305,26 +309,26 @@ export const extractFilterLabels = (
 ) => {
   if (Array.isArray(filtersMap) && filtersMap.length) {
     return filtersMap.reduce((final, curr) => {
-      const { defaultValue, fieldName } = curr
+      const { defaultValue, fieldname } = curr
       if (defaultValue && defaultValue.selected) {
         if (
           Array.isArray(defaultValue.selected) &&
           (defaultValue.selected.length || returnAllFilters)
         ) {
           final.push({
-            name: fieldName,
+            name: fieldname,
             value: (defaultValue.selected.filter((s) => !!s.text) || [])
               .map((s) => s.text)
               .join(', ')
           })
         } else if (defaultValue.selected.text || returnAllFilters) {
           final.push({
-            name: fieldName,
+            name: fieldname,
             value: (defaultValue.selected || {}).text
           })
         }
       } else if (defaultValue || returnAllFilters) {
-        final.push({ name: fieldName, value: defaultValue })
+        final.push({ name: fieldname, value: defaultValue })
       }
       return final
     }, [])

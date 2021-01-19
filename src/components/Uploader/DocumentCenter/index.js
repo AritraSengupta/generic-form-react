@@ -22,21 +22,21 @@ const formData = {
       defaultValue: null
     },
     {
-      fieldName: 'File Name',
+      fieldname: 'File Name',
       dataId: 'name',
       type: 'input',
       defaultValue: '',
       validation: ''
     },
     {
-      fieldName: 'Type',
+      fieldname: 'Type',
       dataId: 'type',
       type: 'input',
       defaultValue: 'abc',
       validation: ''
     },
     {
-      fieldName: 'Description',
+      fieldname: 'Description',
       dataId: 'description',
       type: 'textarea',
       defaultValue: '',
