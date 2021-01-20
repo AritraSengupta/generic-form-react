@@ -15,8 +15,8 @@ export const getDefaultValues = (formData, formState) => {
   formData.forEach((data) => {
     if (data.type === 'checkbox') {
       const defaultValue = get(formState, data.dataId, {
-        value: [],
-        selected: {}
+        value: {},
+        selected: []
       })
       defaultValues[data.dataId] = {
         defaultValue
@@ -286,9 +286,7 @@ export const getValidatorMap = (form, formState) =>
         value = selected && selected.text
       }
     } else if (value && el.type === 'checkbox') {
-      const { value: selected } = value
-      console.log('mark://', 'validatorMap', { value, selected })
-      value = (selected || []).filter((s) => !!s)
+      value = value.selected
     }
     return {
       id: el.dataId,

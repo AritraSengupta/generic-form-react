@@ -48,7 +48,7 @@ export class AsyncSearchExample extends BaseFormConfig {
           callback: searchFunction,
           clearable: true,
         },
-        options: currValue.dropdown && currValue.dropdown.options || [],
+        options: (currValue.dropdown && currValue.dropdown.options) || [],
         validators: [{ type: 'required' }],
       },
       {
@@ -62,7 +62,7 @@ export class AsyncSearchExample extends BaseFormConfig {
           callback: searchFunction,
           clearable: true,
         },
-        options: currValue.dropdown && currValue.dropdownMul.options || [],
+        options: (currValue.dropdown && currValue.dropdownMul.options) || [],
         validators: [{ type: 'required' }],
       },
       {

@@ -18,7 +18,7 @@ export class ConditionalFormBasic extends BaseFormConfig {
     const prevDropdownDefaultValue = prevValues && prevValues.dropdown && prevValues.dropdown.defaultValue;
     const checkboxDefaultValue =(prevDropdownDefaultValue || {}).value !== (dropdownDefaultValue || {}).value
       ? {}
-      : currValue.checkbox && currValue.checkbox.defaultValue || {};
+      : (currValue.checkbox && currValue.checkbox.defaultValue) || {};
     const radioDefaultValue = checkboxDefaultValue.value ? currValue.radio && currValue.radio.defaultValue : {};
 
     return [
@@ -65,7 +65,7 @@ export class ConditionalFormBasic extends BaseFormConfig {
           clearable: true,
           visible: !!textAreaDefaultValue,
         },
-        options: currValue.dropdown && currValue.dropdown.options || [],
+        options: (currValue.dropdown && currValue.dropdown.options) || [],
         validators: [{ type: 'required' }],
       },
       {

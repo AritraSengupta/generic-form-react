@@ -10,7 +10,6 @@
 
 export const standardValidators = {
   required: (value) => {
-    console.log('mark://', 'required', value);
     if (typeof value === 'number') {
       return {
         state: false

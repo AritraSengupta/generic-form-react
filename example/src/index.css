@@ -47,3 +47,14 @@ code {
   background-color: #6c757d;
   border-color: #6c757d;
 }
+
+.link {
+  background: none!important;
+  border: none;
+  padding: 0!important;
+  color: #069;
+}
+
+.link:focus {
+  outline: 0;
+}
