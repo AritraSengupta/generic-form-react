@@ -55,12 +55,6 @@ export default class GenericForm extends React.Component {
     }
   }
 
-  onAdvanceChange = (name, value) => {
-    this.setState((prevState) => ({
-      formData: { ...prevState.formData, [name]: value }
-    }))
-  }
-
   handleInputChange = (e, { name, value, validators, fieldname }) =>
     this.setState((prevState) => ({
       formData: { ...prevState.formData, [name]: value },
@@ -188,6 +182,7 @@ export default class GenericForm extends React.Component {
           onChange={this.handleInputChange}
           disabled={val.config && val.config.disabled}
           {...((val.config && val.config.props) || {})}
+          data-testid='input'
         />
       )
     }
@@ -218,6 +213,7 @@ export default class GenericForm extends React.Component {
             validators={val.validators}
             error={!!(errors[val.dataId] && errors[val.dataId].length)}
             required={isRequired(val.validators)}
+            data-testid='dropdown-search'
           />
         )
       }
@@ -241,6 +237,7 @@ export default class GenericForm extends React.Component {
           validators={val.validators}
           error={!!(errors[val.dataId] && errors[val.dataId].length)}
           required={isRequired(val.validators)}
+          data-testid='dropdown'
         />
       )
     }
@@ -320,6 +317,7 @@ export default class GenericForm extends React.Component {
           >
             <label>{val.fieldname}</label>
             <DatePicker
+              data-testid='date'
               key={val.dataId}
               name={val.dataId}
               fieldname={val.fieldname}
@@ -379,10 +377,10 @@ export default class GenericForm extends React.Component {
     const actualColumns = columns < firstRowLength ? columns : firstRowLength
     return (
       <Grid columns={actualColumns} divided padded>
-        {gridList.map((gl) => (
-          <Grid.Row key={gl.id}>
-            {gl.map((gr) => (
-              <Grid.Column key={gr.id}>{this.getFormUnit(gr)}</Grid.Column>
+        {gridList.map((gl, idx) => (
+          <Grid.Row key={`${gl.dataId}${idx}`}>
+            {gl.map((gr, idx) =>(
+              <Grid.Column key={`${gr.dataId}${idx}`}>{this.getFormUnit(gr)}</Grid.Column>
             ))}
           </Grid.Row>
         ))}
