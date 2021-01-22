@@ -1,4 +1,4 @@
-import { get, set, uniqBy, isPlainObject, has } from 'lodash'
+import { get, set, uniqBy, has } from 'lodash'
 
 import { formatInputIfDate } from './Common'
 
@@ -28,7 +28,7 @@ export const getDefaultValues = (formData, formState) => {
       defaultValues[data.dataId] = { defaultValue }
       return
     }
-    if (data.type === 'dropdown' || data.type === 'paymentTerms') {
+    if (data.type === 'dropdown') {
       const defaultValue = get(formState, data.dataId, {})
       let value
       let options
@@ -98,7 +98,7 @@ export const conditionalFormDefaultValuesGetter = (
           deletedFiles: []
         }
       }
-    } else if (data.type === 'dropdown' || data.type === 'paymentTerms') {
+    } else if (data.type === 'dropdown') {
       const defaultValue = get(apiData, dataMap[data.dataId].id, null)
       if (defaultValue === null || defaultValue === undefined) {
         // case to handle null api values for api calls
@@ -170,7 +170,7 @@ export const defaultValueMapper = (formData, apiData, dataMap) =>
         defaultValue: { files: defaultValue, deletedFiles: [] }
       }
     }
-    if (data.type === 'dropdown' || data.type === 'paymentTerms') {
+    if (data.type === 'dropdown') {
       const defaultValue = get(apiData, dataMap[data.dataId].id, null)
       const valueLabel = dataMap[data.dataId].value || 'id'
       const textLabel = dataMap[data.dataId].text || 'name'
@@ -242,39 +242,6 @@ export const dropdownOptionsMapper = (
   }))
 }
 
-export const removeNullFilters = (filtersCopy) => {
-  const filters = { ...filtersCopy }
-  Object.keys(filters).forEach((f) => {
-    if (
-      filters[f] ||
-      filters[f] === 0 ||
-      filters[f] === false ||
-      filters[f] === '0'
-    ) {
-      if (isPlainObject(filters[f])) {
-        if (
-          filters[f].value !== 0 &&
-          (!filters[f].value ||
-            (Array.isArray(filters[f].value) && filters[f].value.length === 0))
-        ) {
-          delete filters[f]
-        } else {
-          filters[f] = filters[f].value
-        }
-      } else if (Array.isArray(filters[f])) {
-        if (!filters[f].length) {
-          delete filters[f]
-        } else {
-          filters[f] = filters[f].map((fil) => fil.value)
-        }
-      }
-    } else {
-      delete filters[f]
-    }
-  })
-  return filters
-}
-
 export const getValidatorMap = (form, formState) =>
   form.map((el) => {
     let value = formState[el.dataId]
@@ -295,45 +262,6 @@ export const getValidatorMap = (form, formState) =>
       name: el.fieldname
     }
   })
-
-/**
-  Extracts filters data from fully formed Generic Form DataCue
-  @param {*} formData fully formed form data with default values
-  returns an array of type Array<{name: string, value: string}>
-*/
-export const extractFilterLabels = (
-  filtersMap = [],
-  returnAllFilters = false
-) => {
-  if (Array.isArray(filtersMap) && filtersMap.length) {
-    return filtersMap.reduce((final, curr) => {
-      const { defaultValue, fieldname } = curr
-      if (defaultValue && defaultValue.selected) {
-        if (
-          Array.isArray(defaultValue.selected) &&
-          (defaultValue.selected.length || returnAllFilters)
-        ) {
-          final.push({
-            name: fieldname,
-            value: (defaultValue.selected.filter((s) => !!s.text) || [])
-              .map((s) => s.text)
-              .join(', ')
-          })
-        } else if (defaultValue.selected.text || returnAllFilters) {
-          final.push({
-            name: fieldname,
-            value: (defaultValue.selected || {}).text
-          })
-        }
-      } else if (defaultValue || returnAllFilters) {
-        final.push({ name: fieldname, value: defaultValue })
-      }
-      return final
-    }, [])
-  }
-
-  return []
-}
 
 export const getFormGridStruct = (formData, columns) => {
   const gridList = []

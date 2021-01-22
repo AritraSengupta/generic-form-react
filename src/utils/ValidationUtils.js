@@ -48,7 +48,7 @@ export const standardValidators = {
   },
 
   number: (value) => ({
-    state: !(typeof value === 'number' || !Number.isNaN(Number(value))),
+    state: !(typeof value === 'number' && !Number.isNaN(Number(value))),
     message: 'should be a number'
   }),
 

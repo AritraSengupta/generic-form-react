@@ -86,6 +86,169 @@ exports[`FormDisplay should be able to change dropdown values 1`] = `
 </div>
 `;
 
+exports[`FormDisplay should be able to search for the search dropdown 1`] = `
+<div>
+  <form
+    class="ui form"
+  >
+    <div
+      class="ui error message"
+    >
+      <div
+        class="content"
+      >
+        <div
+          class="header"
+        >
+          Please check the form for the following
+        </div>
+        <ul
+          class="list"
+        />
+      </div>
+    </div>
+    <div
+      class="required field"
+    >
+      <label>
+        Dropdown
+      </label>
+      <div
+        aria-busy="false"
+        aria-disabled="false"
+        aria-expanded="false"
+        class="ui search selection dropdown"
+        data-testid="dropdown-search"
+        fieldname="Dropdown"
+        name="dropdown"
+        required=""
+        role="combobox"
+        validators="[object Object]"
+      >
+        <input
+          aria-autocomplete="list"
+          autocomplete="off"
+          class="search"
+          tabindex="0"
+          type="text"
+          value=""
+        />
+        <div
+          aria-atomic="true"
+          aria-live="polite"
+          class="divider text"
+          role="alert"
+        >
+          Option1
+        </div>
+        <i
+          aria-hidden="true"
+          class="dropdown icon clear"
+        />
+        <div
+          class="menu transition"
+          role="listbox"
+        >
+          <div
+            aria-checked="true"
+            aria-selected="true"
+            class="active selected item"
+            role="option"
+            style="pointer-events: all;"
+          >
+            <span
+              class="text"
+            >
+              Option1
+            </span>
+          </div>
+          <div
+            aria-checked="false"
+            aria-selected="false"
+            class="item"
+            role="option"
+            style="pointer-events: all;"
+          >
+            <span
+              class="text"
+            >
+              Option2
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`FormDisplay should be able to search for the search dropdown 2`] = `
+<div
+  aria-busy="false"
+  aria-disabled="false"
+  aria-expanded="true"
+  class="ui active visible search selection dropdown"
+  data-testid="dropdown-search"
+  fieldname="Dropdown"
+  name="dropdown"
+  required=""
+  role="combobox"
+  validators="[object Object]"
+>
+  <input
+    aria-autocomplete="list"
+    autocomplete="off"
+    class="search"
+    tabindex="0"
+    type="text"
+    value="Option"
+  />
+  <div
+    aria-atomic="true"
+    aria-live="polite"
+    class="divider text filtered"
+    role="alert"
+  >
+    Option1
+  </div>
+  <i
+    aria-hidden="true"
+    class="dropdown icon clear"
+  />
+  <div
+    class="visible menu transition"
+    role="listbox"
+  >
+    <div
+      aria-checked="true"
+      aria-selected="true"
+      class="active selected item"
+      role="option"
+      style="pointer-events: all;"
+    >
+      <span
+        class="text"
+      >
+        Option1
+      </span>
+    </div>
+    <div
+      aria-checked="false"
+      aria-selected="false"
+      class="item"
+      role="option"
+      style="pointer-events: all;"
+    >
+      <span
+        class="text"
+      >
+        Option2
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`FormDisplay should render 1`] = `
 Object {
   "asFragment": [Function],
@@ -553,6 +716,91 @@ exports[`FormDisplay should render with all the units 1`] = `
                 Option3
               </label>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`FormDisplay should validate form 1`] = `
+<div>
+  <form
+    class="ui error form"
+  >
+    <div
+      class="ui error message"
+    >
+      <div
+        class="content"
+      >
+        <div
+          class="header"
+        >
+          Please check the form for the following
+        </div>
+        <ul
+          class="list"
+        >
+          <li
+            class="content"
+          >
+            Dropdown: is required
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div
+      class="error required field"
+    >
+      <label>
+        Dropdown
+      </label>
+      <div
+        aria-expanded="false"
+        aria-invalid="true"
+        class="ui selection dropdown"
+        data-testid="dropdown"
+        fieldname="Dropdown"
+        name="dropdown"
+        required=""
+        role="listbox"
+        tabindex="0"
+        validators="[object Object]"
+      >
+        <i
+          aria-hidden="true"
+          class="dropdown icon"
+        />
+        <div
+          class="menu transition"
+        >
+          <div
+            aria-checked="false"
+            aria-selected="true"
+            class="selected item"
+            role="option"
+            style="pointer-events: all;"
+          >
+            <span
+              class="text"
+            >
+              Option1
+            </span>
+          </div>
+          <div
+            aria-checked="false"
+            aria-selected="false"
+            class="item"
+            role="option"
+            style="pointer-events: all;"
+          >
+            <span
+              class="text"
+            >
+              Option2
+            </span>
           </div>
         </div>
       </div>

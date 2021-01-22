@@ -2,7 +2,6 @@ import React from 'react'
 import { Form, Grid, Message } from 'semantic-ui-react'
 import { debounce, uniqBy, isEqual } from 'lodash'
 
-// import FileHandler from './FormFileHandler';
 import DatePicker from './Calendar/DatePicker'
 import {
   getErrorList,
@@ -14,7 +13,7 @@ import {
   isRequired
 } from '../utils'
 
-export default class GenericForm extends React.Component {
+export default class FormDisplay extends React.Component {
   constructor(props) {
     super(props)
     this.state = getDefaultState(props)
@@ -129,12 +128,6 @@ export default class GenericForm extends React.Component {
       },
       errors: this.validateInput(value, validators, prevState, name, fieldname),
       dynamicOptions
-    }))
-  }
-
-  handleFileChange = (fileObject, { name }) => {
-    this.setState((prevState) => ({
-      formData: { ...prevState.formData, [name]: fileObject }
     }))
   }
 
@@ -330,23 +323,6 @@ export default class GenericForm extends React.Component {
         </React.Fragment>
       )
     }
-    // if (val.type === 'files') {
-    //   return (
-    //     <FileHandler
-    //       key={val.dataId}
-    //       name={val.dataId}
-    //       fieldname={val.fieldname}
-    //       folderPath={val.folderPath}
-    //       files={formData[val.dataId].files || []}
-    //       onChange={this.handleFileChange}
-    //       header={val.fieldname}
-    //       validators={val.validators}
-    //       error={!!(errors[val.dataId] && errors[val.dataId].length)}
-    //       required={isRequired(val.validators)}
-    //       {...((val.config && val.config.props) || {})}
-    //     />
-    //   );
-    // }
     return <div>Improper Config</div>
   }
 
@@ -379,8 +355,10 @@ export default class GenericForm extends React.Component {
       <Grid columns={actualColumns} divided padded>
         {gridList.map((gl, idx) => (
           <Grid.Row key={`${gl.dataId}${idx}`}>
-            {gl.map((gr, idx) =>(
-              <Grid.Column key={`${gr.dataId}${idx}`}>{this.getFormUnit(gr)}</Grid.Column>
+            {gl.map((gr, idx) => (
+              <Grid.Column key={`${gr.dataId}${idx}`}>
+                {this.getFormUnit(gr)}
+              </Grid.Column>
             ))}
           </Grid.Row>
         ))}
