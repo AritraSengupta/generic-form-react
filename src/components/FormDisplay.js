@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Form, Grid, Message } from 'semantic-ui-react'
 import { debounce, uniqBy, isEqual } from 'lodash'
 
@@ -181,6 +182,12 @@ export default class FormDisplay extends React.Component {
     }
     if (val.type === 'dropdown') {
       if (val.config && val.config.search) {
+        const isMultiple = val.config && val.config.multiple
+        let value = (formData[val.dataId] || {}).value
+        if (!value && isMultiple) {
+          // handling case for multiple dropdowns
+          value = []
+        }
         return (
           <Form.Dropdown
             key={val.dataId}
@@ -188,12 +195,12 @@ export default class FormDisplay extends React.Component {
             name={val.dataId}
             fieldname={val.fieldname}
             options={dynamicOptions[val.dataId].options}
-            multiple={val.config && val.config.multiple}
+            multiple={isMultiple}
             clearable={val.config && val.config.clearable}
             selection
             search
             placeholder={val.placeholder}
-            value={(formData[val.dataId] || {}).value}
+            value={value}
             onChange={this.handleDropdownChange}
             onSearchChange={this.handleDynamicSearchChange}
             disabled={
@@ -388,4 +395,41 @@ export default class FormDisplay extends React.Component {
       </Form>
     )
   }
+}
+
+FormDisplay.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.exact({
+      dataId: PropTypes.string.isRequired,
+      type: PropTypes.oneOf([
+        'hidden',
+        'date',
+        'input',
+        'textarea',
+        'dropdown',
+        'checkbox',
+        'radio'
+      ]).isRequired,
+      fieldname: PropTypes.string,
+      defaultValue: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+        PropTypes.object
+      ]),
+      config: PropTypes.object,
+      options: PropTypes.arrayOf(
+        PropTypes.shape({
+          text: PropTypes.string,
+          value: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+        })
+      ),
+      validators: PropTypes.arrayOf(
+        PropTypes.oneOfType([PropTypes.object, PropTypes.func])
+      )
+    })
+  ).isRequired,
+  onChange: PropTypes.func.isRequired,
+  loading: PropTypes.bool,
+  columns: PropTypes.number,
+  errors: PropTypes.object
 }

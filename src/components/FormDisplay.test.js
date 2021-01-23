@@ -10,11 +10,6 @@ const data = [
     defaultValue: null
   },
   {
-    dataId: 'random',
-    defaultValue: '',
-    validators: [{ type: 'required' }]
-  },
-  {
     fieldname: 'Date',
     dataId: 'date',
     type: 'date',

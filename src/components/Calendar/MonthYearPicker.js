@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Table } from 'semantic-ui-react'
 
 const monthData = [
@@ -63,6 +64,11 @@ export class MonthPicker extends React.Component {
   }
 }
 
+MonthPicker.propTypes = {
+  selectedMonth: PropTypes.string,
+  onSelectMonth: PropTypes.func.isRequired
+}
+
 export class YearPicker extends React.Component {
   constructor(props) {
     super(props)
@@ -110,4 +116,10 @@ export class YearPicker extends React.Component {
       />
     )
   }
+}
+
+YearPicker.propTypes = {
+  year: PropTypes.number.isRequired,
+  selectedYear: PropTypes.number,
+  onSelectYear: PropTypes.func.isRequired
 }

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Input, Icon, Popup } from 'semantic-ui-react'
 import { isEqual } from 'lodash'
 
@@ -324,4 +325,11 @@ export default class DatePicker extends React.Component {
       />
     )
   }
+}
+
+DatePicker.propTypes = {
+  value: PropTypes.string,
+  startDisabled: PropTypes.string,
+  endDisabled: PropTypes.string,
+  onDateChange: PropTypes.func.isRequired
 }

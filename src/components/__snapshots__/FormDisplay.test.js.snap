@@ -382,13 +382,6 @@ exports[`FormDisplay should render with all the units 1`] = `
         <div
           class="column"
         >
-          <div>
-            Improper Config
-          </div>
-        </div>
-        <div
-          class="column"
-        >
           <div
             class="required field"
           >
@@ -409,10 +402,6 @@ exports[`FormDisplay should render with all the units 1`] = `
             </div>
           </div>
         </div>
-      </div>
-      <div
-        class="row"
-      >
         <div
           class="column"
         >
@@ -437,6 +426,10 @@ exports[`FormDisplay should render with all the units 1`] = `
             </div>
           </div>
         </div>
+      </div>
+      <div
+        class="row"
+      >
         <div
           class="column"
         >
@@ -455,10 +448,6 @@ exports[`FormDisplay should render with all the units 1`] = `
             />
           </div>
         </div>
-      </div>
-      <div
-        class="row"
-      >
         <div
           class="column"
         >
@@ -516,6 +505,10 @@ exports[`FormDisplay should render with all the units 1`] = `
             </div>
           </div>
         </div>
+      </div>
+      <div
+        class="row"
+      >
         <div
           class="column"
         >
@@ -587,10 +580,6 @@ exports[`FormDisplay should render with all the units 1`] = `
             </div>
           </div>
         </div>
-      </div>
-      <div
-        class="row"
-      >
         <div
           class="column"
         >
@@ -644,6 +633,10 @@ exports[`FormDisplay should render with all the units 1`] = `
             </div>
           </div>
         </div>
+      </div>
+      <div
+        class="row"
+      >
         <div
           class="column"
         >

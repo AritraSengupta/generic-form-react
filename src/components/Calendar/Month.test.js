@@ -1,17 +1,26 @@
 import React from 'react'
 import { fireEvent } from '@testing-library/react'
-import Month, { isDisabledCell } from './Month'
+import Month from './Month'
 
 describe('Month', () => {
+  const onChangeMock = jest.fn()
+  beforeEach(() => {
+    onChangeMock.mockReset()
+  })
   it('should render a invalid table if data is invalid', () => {
-    const { container } = render(<Month month='April' year={null} />)
+    const { container } = render(<Month year={null} onChange={onChangeMock} />)
     expect(container).toMatchSnapshot()
     const tableObj = container.querySelectorAll('table')
     expect(tableObj.length).toBe(0)
   })
   it('should render a month table if valid date', () => {
     const { container } = render(
-      <Month month={1} year={2019} disableStart='2019-2-15' />
+      <Month
+        month={1}
+        year={2019}
+        disableStart='2019-2-15'
+        onChange={onChangeMock}
+      />
     )
     expect(container).toMatchSnapshot()
     const tableObj = container.getElementsByTagName('table')

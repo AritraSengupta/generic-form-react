@@ -34,12 +34,17 @@ export const getDefaultValues = (formData, formState) => {
       let options
       if (data.config && data.config.multiple) {
         value = (defaultValue && defaultValue.selected) || []
+        if (value.length === 0) {
+          defaultValue.value = []
+          defaultValue.selected = []
+        }
         options = uniqBy([...(data.options || []), ...value], 'value')
       } else {
         const { selected } = defaultValue || {}
         value = selected ? [selected] : []
         options = uniqBy([...(data.options || []), ...value], 'value')
       }
+
       defaultValues[data.dataId] = {
         defaultValue,
         options

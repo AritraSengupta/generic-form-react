@@ -114,43 +114,21 @@ exports[`Picker should render year picker 1`] = `
       >
         <td
           class="compact highlight "
-          data-name="NaN"
+          data-name="2012"
         >
-          
+          2012
         </td>
         <td
           class="compact highlight "
-          data-name="NaN"
+          data-name="2013"
         >
-          
+          2013
         </td>
         <td
           class="compact highlight "
-          data-name="NaN"
+          data-name="2014"
         >
-          
-        </td>
-      </tr>
-      <tr
-        class=""
-      >
-        <td
-          class="compact highlight "
-          data-name="NaN"
-        >
-          
-        </td>
-        <td
-          class="compact highlight "
-          data-name="NaN"
-        >
-          
-        </td>
-        <td
-          class="compact highlight "
-          data-name="NaN"
-        >
-          
+          2014
         </td>
       </tr>
       <tr
@@ -158,20 +136,21 @@ exports[`Picker should render year picker 1`] = `
       >
         <td
           class="compact highlight "
-          data-name="NaN"
+          data-name="2015"
         >
-          
+          2015
         </td>
         <td
           class="compact highlight "
+          data-name="2016"
         >
-          
+          2016
         </td>
         <td
           class="compact highlight "
-          data-name="NaN"
+          data-name="2017"
         >
-          
+          2017
         </td>
       </tr>
       <tr
@@ -179,21 +158,43 @@ exports[`Picker should render year picker 1`] = `
       >
         <td
           class="compact highlight "
-          data-name="NaN"
+          data-name="2018"
         >
-          
+          2018
+        </td>
+        <td
+          class="compact highlight selected"
+          data-name="2019"
+        >
+          2019
         </td>
         <td
           class="compact highlight "
-          data-name="NaN"
+          data-name="2020"
         >
-          
+          2020
+        </td>
+      </tr>
+      <tr
+        class=""
+      >
+        <td
+          class="compact highlight "
+          data-name="2021"
+        >
+          2021
         </td>
         <td
           class="compact highlight "
-          data-name="NaN"
+          data-name="2022"
         >
-          
+          2022
+        </td>
+        <td
+          class="compact highlight "
+          data-name="2023"
+        >
+          2023
         </td>
       </tr>
     </tbody>

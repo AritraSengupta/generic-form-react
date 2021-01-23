@@ -1,5 +1,7 @@
 import React from 'react'
 import { Table } from 'semantic-ui-react'
+import PropTypes from 'prop-types'
+
 import { getDateString, isValidDate } from '../../utils'
 
 export const isDisabledCell = (date, month, year, startDisable, endDisable) => {
@@ -16,10 +18,12 @@ export const isDisabledCell = (date, month, year, startDisable, endDisable) => {
 /**
  * type Props = {
  *  onChange: (e: Event, name: string) => void
- *  month: string
- *  year: string
+ *  month: number
+ *  year: number
  *  selectedOrCurrent: Date string (DD-MM-YYYY), showing date in blue, useful for showing selection
  *  highlightedDates: Array<{[date: number]: warning | negative | positive | error}>
+ *  disableStart: Date string (DD-MM-YYYY), starting date of the disabled dates
+ *  disableEnd: Date string(DD-MM-YYYY), ending date of disabled dates
  * }
  *
  * selectedOrCurrent is used to show a selected or current date when using a date picker
@@ -155,6 +159,16 @@ export class MonthTable extends React.Component {
       />
     )
   }
+}
+
+MonthTable.propTypes = {
+  month: PropTypes.number,
+  year: PropTypes.number,
+  selectedOrCurrent: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
+  highlightedDates: PropTypes.arrayOf(PropTypes.number),
+  disableStart: PropTypes.string,
+  disableEnd: PropTypes.string
 }
 
 export default MonthTable

@@ -4,13 +4,23 @@ import { MonthPicker, YearPicker } from './MonthYearPicker'
 
 describe('Picker', () => {
   it('should render month picker', () => {
-    const { container } = render(<MonthPicker selectedMonth='Apr' />)
+    const selectedMonthMock = jest.fn()
+    const { container } = render(
+      <MonthPicker selectedMonth='Apr' onSelectMonth={selectedMonthMock} />
+    )
 
     expect(container).toMatchSnapshot()
   })
 
   it('should render year picker', () => {
-    const { container } = render(<YearPicker selectedYear={2019} />)
+    const selectYearMock = jest.fn()
+    const { container } = render(
+      <YearPicker
+        year={2019}
+        selectedYear={2019}
+        onSelectYear={selectYearMock}
+      />
+    )
 
     expect(container).toMatchSnapshot()
   })

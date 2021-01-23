@@ -1,5 +1,6 @@
 import React from 'react'
 import { isEqual } from 'lodash'
+import PropTypes from 'prop-types'
 
 import FormDisplay from './FormDisplay'
 import { getDefaultValues } from '../utils'
@@ -7,7 +8,7 @@ import { getDefaultValues } from '../utils'
 /**
  * GenericConditionalForm component renders a form which can be conditional on the current data
  * @props (onChange): OPTIONAL: Function called whenever a formState changes
- * @props (form): the form whose format is very specfic: FormType
+ * @props (data): the form whose format is very specfic: FormType
  * @props (defaultValues): OPTIONAL: To set the initial values of the form
  * @props (errors): OPTIONAL: To set the initial errors of the form
  * type FormType = (defaultValues: DefaultValues) => {
@@ -113,6 +114,7 @@ export class Form extends React.Component {
     const { errors, defaultValues, prevValues, loading } = this.state
     const { data: form, columns } = this.props
     const currentForm = form(defaultValues, prevValues)
+
     return (
       <FormDisplay
         columns={columns}
@@ -124,4 +126,11 @@ export class Form extends React.Component {
       />
     )
   }
+}
+
+Form.propTypes = {
+  data: PropTypes.func,
+  errors: PropTypes.object,
+  defaultValues: PropTypes.object,
+  onChange: PropTypes.func
 }
