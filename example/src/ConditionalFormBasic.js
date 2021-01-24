@@ -18,7 +18,7 @@ export class ConditionalFormBasic extends BaseFormConfig {
     const prevDropdownDefaultValue = prevValues && prevValues.dropdown && prevValues.dropdown.defaultValue;
     const checkboxDefaultValue =(prevDropdownDefaultValue || {}).value !== (dropdownDefaultValue || {}).value
       ? {}
-      : currValue.checkbox && currValue.checkbox.defaultValue || {};
+      : (currValue.checkbox && currValue.checkbox.defaultValue) || {};
     const radioDefaultValue = checkboxDefaultValue.value ? currValue.radio && currValue.radio.defaultValue : {};
 
     return [
@@ -28,14 +28,14 @@ export class ConditionalFormBasic extends BaseFormConfig {
         defaultValue: null,
       },
       {
-        fieldName: 'Date',
+        fieldname: 'Date',
         dataId: 'date',
         type: 'date',
         defaultValue: dateDefaultValue,
         validators: [{ type: 'required' }],
       },
       {
-        fieldName: 'Name',
+        fieldname: 'Name',
         dataId: 'name',
         type: 'input',
         defaultValue: nameDefaultValue,
@@ -45,7 +45,7 @@ export class ConditionalFormBasic extends BaseFormConfig {
         validators: [{ type: 'required' }],
       },
       {
-        fieldName: 'TextArea',
+        fieldname: 'TextArea',
         dataId: 'textarea',
         type: 'textarea',
         config: {
@@ -55,7 +55,7 @@ export class ConditionalFormBasic extends BaseFormConfig {
         validators: [{ type: 'required' }],
       },
       {
-        fieldName: 'Dropdown',
+        fieldname: 'Dropdown',
         dataId: 'dropdown',
         type: 'dropdown',
         defaultValue: dropdownDefaultValue,
@@ -65,11 +65,11 @@ export class ConditionalFormBasic extends BaseFormConfig {
           clearable: true,
           visible: !!textAreaDefaultValue,
         },
-        options: currValue.dropdown && currValue.dropdown.options || [],
+        options: (currValue.dropdown && currValue.dropdown.options) || [],
         validators: [{ type: 'required' }],
       },
       {
-        fieldName: 'Checkbox',
+        fieldname: 'Checkbox',
         dataId: 'checkbox',
         type: 'checkbox',
         defaultValue: checkboxDefaultValue,
@@ -83,7 +83,7 @@ export class ConditionalFormBasic extends BaseFormConfig {
         validators: [{ type: 'required' }],
       },
       {
-        fieldName: 'Radio',
+        fieldname: 'Radio',
         dataId: 'radio',
         type: 'radio',
         config: {

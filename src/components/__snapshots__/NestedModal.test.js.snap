@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Nested Modal should render NestedModal 1`] = `
+<div>
+  <button>
+    Click
+  </button>
+</div>
+`;
+
+exports[`Nested Modal should render NestedModal 2`] = `
+<div>
+  <button>
+    Click
+  </button>
+</div>
+`;

@@ -1,5 +1,6 @@
-import { isEqual } from 'lodash'
 import React from 'react'
+import { isEqual } from 'lodash'
+import PropTypes from 'prop-types'
 import { Button, Modal } from 'semantic-ui-react'
 
 /**
@@ -48,7 +49,16 @@ export const NestedModal = (props) => {
   )
 }
 
-export const withNestedModal = (Component, Trigger, props = {}) =>
+NestedModal.propTypes = {
+  open: PropTypes.bool,
+  onOpen: PropTypes.func,
+  close: PropTypes.func,
+  action: PropTypes.func,
+  disabled: PropTypes.bool,
+  label: PropTypes.string
+}
+
+export const withNestedModal = (Component, Trigger, props = {}) => {
   class ModalWithConfirmation extends React.Component {
     state = {
       open: false,
@@ -162,3 +172,14 @@ export const withNestedModal = (Component, Trigger, props = {}) =>
       )
     }
   }
+
+  ModalWithConfirmation.propTypes = {
+    onSave: PropTypes.func,
+    onDelete: PropTypes.func,
+    dataMap: PropTypes.object,
+    callback: PropTypes.func,
+    deleteCallback: PropTypes.func
+  }
+
+  return ModalWithConfirmation
+}

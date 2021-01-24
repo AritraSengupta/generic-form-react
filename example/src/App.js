@@ -21,7 +21,7 @@ const style = {
   },
   link: {
     marginRight: '8px',
-    cursor: 'pointer'
+    cursor: 'pointer',
   },
   get linkSelected() {
     return ({
@@ -38,6 +38,9 @@ const style = {
     marginLeft: '10px',
     marginTop: '20px',
   },
+  separator: {
+    marginRight: '8px',
+  }
 };
 
 const headerMap = {
@@ -94,10 +97,38 @@ export default () => {
     <div style={style.container}>
       <div style={style.formContainer}>
         <div>
-          <a onClick={() => setFormType('basic')} style={getLinkStyle('basic')}>Basic</a>| 
-          <a onClick={() => setFormType('async')} style={getLinkStyle('async')}>  Async </a>| 
-          <a onClick={() => setFormType('conditional1')} style={getLinkStyle('conditional1')}>  Conditional </a>|
-          <a onClick={() => setFormType('conditional2')} style={getLinkStyle('conditional2')}>  Conditional (Adv) </a>| 
+          <button
+            onClick={() => setFormType('basic')}
+            style={getLinkStyle('basic')}
+            className={'link'}
+          >
+            Basic
+          </button>
+          <span style={style.separator}>|</span> 
+          <button
+            onClick={() => setFormType('async')}
+            style={getLinkStyle('async')}
+            className={'link'}
+          > 
+          Async
+          </button>
+          <span style={style.separator}>|</span> 
+          <button
+            onClick={() => setFormType('conditional1')}
+            style={getLinkStyle('conditional1')}
+            className={'link'}
+          >
+            Conditional
+          </button>
+          <span style={style.separator}>|</span> 
+          <button
+            onClick={() => setFormType('conditional2')}
+            style={getLinkStyle('conditional2')}
+            className={'link'}
+          >
+            Conditional (Adv)
+          </button>
+          <span style={style.separator}>|</span> 
           <hr />
         </div>
         <div>
