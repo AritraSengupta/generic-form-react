@@ -1,8 +1,8 @@
 {
   "name": "react-generic-form",
   "version": "1.0.0",
-  "description": "Generic react form component",
-  "author": "AritraSengupta",
+  "description": "React form component with validation, async fetch and config based declaration",
+  "author": "Aritra Sengupta",
   "license": "MIT",
   "repository": "AritraSengupta/react-generic-form",
   "main": "dist/index.js",
