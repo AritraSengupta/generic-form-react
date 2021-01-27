@@ -1,15 +1,15 @@
-# react-generic-form
+# generic-form-react
 
 > Generic react form component
 
-[![NPM](https://img.shields.io/npm/v/react-generic-form.svg)](https://www.npmjs.com/package/react-generic-form) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![NPM](https://img.shields.io/npm/v/generic-form-react.svg)](https://www.npmjs.com/package/generic-form-react) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 # Example
 You can find a few different examples here: https://aritrasengupta.github.io/generic-form-react/
 ## Install
 
 ```bash
-npm install --save react-generic-form
+npm install --save generic-form-react
 ```
 
 ## Usage
@@ -17,8 +17,8 @@ npm install --save react-generic-form
 ```jsx
 import React, { Component } from 'react'
 
-import { Form, BaseFormConfig } from 'react-generic-form';
-import 'react-generic-form/dist/index.css'
+import { Form, BaseFormConfig } from 'generic-form-react';
+import 'generic-form-react/dist/index.css'
 
 /* Write the config */
 class ExampleBasicForm extends BaseFormConfig {

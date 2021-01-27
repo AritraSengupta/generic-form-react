@@ -1,4 +1,4 @@
-import { BaseFormConfig } from 'react-generic-form';
+import { BaseFormConfig } from 'generic-form-react';
 
 const searchFunction = async () => new Promise((resolve) => setTimeout(() => resolve([
   { text: 'Option1', value: 1 },

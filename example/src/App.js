@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Form } from 'react-generic-form';
+import { Form } from 'generic-form-react';
 
 import { ExampleBasicForm } from './FormConfig';
 import { AsyncSearchExample } from './AsyncSearchExample';
@@ -7,7 +7,7 @@ import { ConditionalFormBasic } from './ConditionalFormBasic';
 import { ConditionalFormAdvanced } from './ConditionalFormAdvanced';
 
 import './index.css';
-import 'react-generic-form/dist/index.css';
+import 'generic-form-react/dist/index.css';
 import 'semantic-ui-css/semantic.min.css';
 
 const style = {
@@ -76,7 +76,6 @@ const checkboxOptions = [
 export default () => {
   const formRef = useRef(null);
   const [ formType, setFormType ] = useState('basic');
-  const [ defaultValues, setDefaultValues ] = useState({});
 
   const exampleForm = new ExampleBasicForm({ radioOptions, checkboxOptions });
   const asyncExample = new AsyncSearchExample();
@@ -88,8 +87,6 @@ export default () => {
       formRef.current.validateForm();
     }
   };
-
-  const resetForm = () => setDefaultValues({});
   
   const getLinkStyle = (linkName) => linkName === formType ? style.linkSelected : style.link;
 
@@ -138,7 +135,6 @@ export default () => {
         {formType === 'basic' && <Form
           data={exampleForm.data}
           ref={formRef}
-          defaultValues={defaultValues}
         />}
         {formType === 'async' && <Form
           data={asyncExample.data}
@@ -154,9 +150,6 @@ export default () => {
           ref={formRef}
         />}
         <div>
-          <button onClick={resetForm} className={'btn btn_secondary'} style={style.buttonReset}>
-            Reset
-          </button>
           <button onClick={validateForm} className={'btn btn_primary'} style={style.buttonSubmit}>
             Submit
           </button>
