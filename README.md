@@ -5,7 +5,7 @@
 [![NPM](https://img.shields.io/npm/v/react-generic-form.svg)](https://www.npmjs.com/package/react-generic-form) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 # Example
-You can find a few different examples here: https://aritrasengupta.github.io/react-generic-form/
+You can find a few different examples here: https://aritrasengupta.github.io/generic-form-react/
 ## Install
 
 ```bash
