@@ -1,6 +1,6 @@
 {
   "name": "generic-form-react",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "React form component with validation, async fetch and config based declaration",
   "author": "Aritra Sengupta",
   "license": "MIT",

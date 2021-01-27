@@ -1,4 +1,4 @@
-import { BaseFormConfig } from 'react-generic-form';
+import { BaseFormConfig } from 'generic-form-react';
 
 export class ExampleBasicForm extends BaseFormConfig {
   title = 'Basic Example'
